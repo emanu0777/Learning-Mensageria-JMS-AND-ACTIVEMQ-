@@ -9,10 +9,13 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.naming.InitialContext;
+
+import br.com.caelum.modelo.Pedido;
 
 public class TesteConsumidorTopicoEstoque {
 
@@ -34,12 +37,11 @@ public class TesteConsumidorTopicoEstoque {
 			
 			@Override
 			public void onMessage(Message message) {
-				TextMessage textMessage = (TextMessage) message;
-				try {
-					System.out.println(textMessage.getText());
-				} catch (JMSException e) {
-					e.printStackTrace();
-				}
+//				ObjectMessage objectMessage = (ObjectMessage) message;
+				TextMessage texMessage = (TextMessage) message;
+//					Pedido pedido = (Pedido) objectMessage.getObject();
+//					System.out.println(pedido.getCodigo());
+				System.out.println(message);
 			}
 		});
 	

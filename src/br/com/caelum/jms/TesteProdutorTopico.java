@@ -1,5 +1,6 @@
 package br.com.caelum.jms;
 
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -14,6 +15,10 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.InitialContext;
+import javax.xml.bind.JAXB;
+
+import br.com.caelum.modelo.Pedido;
+import br.com.caelum.modelo.PedidoFactory;
 
 public class TesteProdutorTopico {
 
@@ -22,15 +27,16 @@ public class TesteProdutorTopico {
 		
 		ConnectionFactory cf = (ConnectionFactory)context.lookup("ConnectionFactory");
 		Connection conexao = cf.createConnection();
-
+		System.setProperty("org.apache.activemq.SERIALIZABLE_PACKAGES","*");
 		conexao.start();
 		
 		Session session = conexao.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		Destination fila = (Destination) context.lookup("loja");
 		
 		MessageProducer producer =  session.createProducer(fila);
-
-		Message message = session.createTextMessage("<pedido><id>222</id></pedido>");
+		Pedido pedido = new PedidoFactory().geraPedidoComValores();
+		
+		Message message = session.createObjectMessage(pedido);
 		message.setBooleanProperty("ebook", false);
 		producer.send(message);
 		 
