@@ -23,7 +23,7 @@ public class TesteConsumidorFila {
 
 		conexao.start();
 		
-		Session session = conexao.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		Session session = conexao.createSession(true, Session.SESSION_TRANSACTED);
 		Destination fila = (Destination) context.lookup("financeiro");
 		MessageConsumer consumer = session.createConsumer(fila);
 		
@@ -33,7 +33,9 @@ public class TesteConsumidorFila {
 			public void onMessage(Message message) {
 				TextMessage textMessage = (TextMessage) message;
 				try {
+					//message.acknowledge();
 					System.out.println(textMessage.getText());
+					session.rollback();
 				} catch (JMSException e) {
 					e.printStackTrace();
 				}

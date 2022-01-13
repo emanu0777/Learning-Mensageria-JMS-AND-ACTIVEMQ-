@@ -36,7 +36,7 @@ public class TesteProdutorTopico {
 		MessageProducer producer =  session.createProducer(fila);
 		Pedido pedido = new PedidoFactory().geraPedidoComValores();
 		
-		Message message = session.createObjectMessage(pedido);
+		TextMessage message= session.createTextMessage("<pedido>13</pedido>");
 		message.setBooleanProperty("ebook", false);
 		producer.send(message);
 		 
